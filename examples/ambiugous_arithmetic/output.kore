@@ -1,0 +1,53 @@
+// KORE specification
+[]
+module TEST
+ sort Int{} []
+ sort Var{} []
+ sort Exp{} []
+
+ symbol inj{SIn,SOut}(SIn): SOut []
+ symbol plus{}(Exp{}, Exp{}): Exp{} []
+ symbol times{}(Exp{}, Exp{}): Exp{} []
+
+ axiom{} \dv{Int{}}("1") []
+ axiom{} inj{Int{},Exp{}}(\dv{Int{}}("1")) []
+ axiom{} plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))) []
+ axiom{} \or{Exp{}}(
+            plus{}(plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))),inj{Int{},Exp{}}(\dv{Int{}}("3"))),
+            plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),plus{}(inj{Int{},Exp{}}(\dv{Int{}}("2")),inj{Int{},Exp{}}(\dv{Int{}}("3"))))
+            ) []
+ axiom{} \and{Exp{}}(
+   \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("X")), inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
+   \and{Exp{}}(
+      \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Y")), inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
+      \and{Exp{}}(
+         \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Z")), inj{Int{}, Exp{}}(\dv{Int{}}("3"))),
+         \and{Exp{}}(
+            \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Q")), inj{Var{},Exp{}}(\dv{Var{}}("VAR"))),
+            \and{Exp{}}(
+               \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")),inj{Var{},Exp{}}(\dv{Var{}}("Y")))),
+               \and{Exp{}}(
+                  \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("ZPQ")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("Z")),inj{Var{},Exp{}}(\dv{Var{}}("Q")))),
+                  \and{Exp{}}(
+                     \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), times{}(inj{Var{},Exp{}}(\dv{Var{}}("Y")),inj{Var{},Exp{}}(\dv{Var{}}("Z")))),
+                     \or{Exp{}}(
+                        times{}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")),inj{Var{},Exp{}}(\dv{Var{}}("ZPQ"))),
+                        \or{Exp{}}(
+                           plus{}(times{}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")), inj{Var{},Exp{}}(\dv{Var{}}("Z"))), inj{Var{},Exp{}}(\dv{Var{}}("Q"))),
+                           \or{Exp{}}(
+                              plus{}(plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), inj{Var{},Exp{}}(\dv{Var{}}("YTZ"))), inj{Var{},Exp{}}(\dv{Var{}}("Q"))),
+                              \or{Exp{}}(
+                                 plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), inj{Var{},Exp{}}(\dv{Var{}}("Q")))),
+                                 plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), times{}(inj{Var{},Exp{}}(\dv{Var{}}("Y")), inj{Var{},Exp{}}(\dv{Var{}}("ZPQ"))))
+		              )
+			   )
+		     	)
+		     )
+                  )
+               )
+            )
+         )
+      )
+   )
+ ) []  
+endmodule []
