@@ -41,10 +41,31 @@ module TEST
 		          rshift{}(lt{}(lt{}(HashSetE:Exp{}, HashSetE:Exp{}), StringE:Exp{}), Foo:Exp{})
 	               )
 		    ),
-	            inj{Stmt{}, LogicLevel{}}(
-                       stmt{}(
-		          rshift{}(lt{}(HashSetE:Exp{}, lt{}(HashSetE:Exp{}, StringE:Exp{})), Foo:Exp{})
-	               )
+		    \or{LogicLevel{}}(
+	               inj{Stmt{}, LogicLevel{}}(
+                          stmt{}(
+		             rshift{}(lt{}(HashSetE:Exp{}, lt{}(HashSetE:Exp{}, StringE:Exp{})), Foo:Exp{})
+	                  )
+		       ),
+		       \or{LogicLevel{}}(
+	                  inj{Stmt{}, LogicLevel{}}(
+                             stmt{}(
+		                lt{}(HashSetE:Exp{}, rshift{}(lt{}(HashSetE:Exp{}, StringE:Exp{}), Foo:Exp{}))
+	                     )
+		          ),
+		          \or{LogicLevel{}}(
+	                     inj{Stmt{}, LogicLevel{}}(
+                                stmt{}(
+		                   lt{}(lt{}(HashSetE:Exp{}, HashSetE:Exp{}), rshift{}(StringE:Exp{}, Foo:Exp{}))
+	                        )
+		             ),
+	                     inj{Stmt{}, LogicLevel{}}(
+                                stmt{}(
+		                   lt{}(HashSetE:Exp{}, lt{}(HashSetE:Exp{}, rshift{}(StringE:Exp{}, Foo:Exp{})))
+	                        )
+			     )
+			  )
+                       )
 		    )
 	         )
 	      )
@@ -57,6 +78,16 @@ module TEST
 )
 )
 []
+
+// templated type parse
+// HashSet<HashSet<String>> Foo; 
+
+// lt/rshift parses
+// ((HashSet < HashSet) < String) >> Foo;
+// (HashSet < (HashSet < String)) >> Foo;
+// HashSet < ((HashSet < String) >> Foo);
+// (HashSet < HashSet) < (String >> Foo);
+// HashSet < (HashSet < (String >> Foo));
 
 endmodule []
 
