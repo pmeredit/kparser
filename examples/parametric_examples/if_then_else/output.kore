@@ -1,0 +1,21 @@
+// KORE specification
+[]
+module TEST
+ sort Exp{}  []
+ sort Stmt{} []
+ sort Var{}  []
+ sort LogicLevel{} []
+
+ symbol inj{SIn,SOut}(SIn): SOut []
+
+ symbol eq{}(Exp{}, Exp{}) : Exp{} []
+ symbol lt{}(Exp{}, Exp{}) : Exp{} []
+ symbol gt{}(Exp{}, Exp{}) : Exp{} []
+ symbol it{}(Exp{}, Stmt{}) : Stmt{} []
+ symbol ite{}(Exp{}, Stmt{}, Stmt{}) : Stmt{} []
+
+
+ axiom{}
+
+endmodule []
+

@@ -3,7 +3,6 @@
 module TEST
  sort Exp{}  []
  sort Stmt{} []
- sort Type{} []
  sort Var{}  []
  sort LogicLevel{} []
 
