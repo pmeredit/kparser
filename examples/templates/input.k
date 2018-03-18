@@ -4,6 +4,7 @@ module TEST
  syntax Exp  ::= Int
  syntax Exp  ::= Var
  syntax Exp  ::= Exp ">>" Exp [symbol(rshift)]
+ syntax Exp  ::= Exp "<" Exp [symbol(lt)]
  syntax Int  ::= r"[0-9]+"  
  syntax Type ::= r"[A-Z][A-Za-z0-9]*"
  // This is simplified, in a more realistic grammar

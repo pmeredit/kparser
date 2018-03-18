@@ -16,6 +16,9 @@ module TEST
             plus{}(plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))),inj{Int{},Exp{}}(\dv{Int{}}("3"))),
             plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),plus{}(inj{Int{},Exp{}}(\dv{Int{}}("2")),inj{Int{},Exp{}}(\dv{Int{}}("3"))))
             ) []
+
+ // There is no need for a LogicLevel here, but likely we should include it in all examples,
+ // since we'll like want to generated it to encode sharing.
  axiom{} 
  \exists{Exp{}}(X:Exp{},
  \exists{Exp{}}(Y:Exp{},

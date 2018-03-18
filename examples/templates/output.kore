@@ -6,13 +6,50 @@ module TEST
  sort Int{} []
  sort Type{} []
  sort Var{} []
+ sort LogicLevel{} []
 
  symbol inj{SIn,SOut}(SIn): SOut []
  
  symbol tstmt{}(Type{}, Exp{}): Stmt{} []
  symbol stmt{}(Exp{}): Stmt{} []
  symbol rshift{}(Exp{}, Exp{}): Exp{} []
+ symbol lt{}(Exp{}, Exp{}): Exp{} []
  symbol ptype{}(Type{}, Type{}): Type{} []
 
- 
+ axiom{}
+\exists{LogicLevel{}}(Foo:Exp{}, 
+\exists{LogicLevel{}}(HashSet:Type{},
+\exists{LogicLevel{}}(String:Type{},
+\exists{LogicLevel{}}(HashSetE:Exp{},
+\exists{LogicLevel{}}(StringE:Exp{},
+  \and{LogicLevel{}}(
+     \equals{Exp{}, LogicLevel{}}(Foo:Exp{}, inj{Var{}, Exp{}}(\dv{Var{}}("Foo"))),
+     \and{LogicLevel{}}(
+        \equals{Type{}, LogicLevel{}}(HashSet:Type{}, \dv{Type{}}("HashSet")),
+	   \and{LogicLevel{}}(
+	      \equals{Type{}, LogicLevel{}}(String:Type{}, \dv{Type{}}("String")),
+              \or{LogicLevel{}}(
+	         inj{Stmt{}, LogicLevel{}}(
+                    tstmt{}(
+	     	       ptype{}(HashSet:Type{}, ptype{}(HashSet:Type{}, String:Type{})),
+		       Foo:Exp{}
+	            )
+		 ),
+	         inj{Stmt{}, LogicLevel{}}(
+                    stmt{}(
+		       rshift{}(lt{}(lt{}(HashSetE:Exp{}, HashSetE:Exp{}), StringE:Exp{}), Foo:Exp{})
+	            )
+		 )
+	      )
+           )
+        )
+     )
+  )
+)
+) 
+)
+)
+[]
+
 endmodule []
+
