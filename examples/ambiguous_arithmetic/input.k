@@ -3,9 +3,9 @@ module TEST
  syntax Var ::= r"[A-Z][a-zA-Z0-9]*"
  syntax Exp ::= Int
  syntax Exp ::= Var 
- syntax Exp ::= Exp "+" Exp [klabel(plus)] 
- syntax Exp ::= Exp "*" Exp [klabel(times)]
- syntax Exp ::= Int [klabel(inj)] 
+ syntax Exp ::= Exp "+" Exp [symbol(plus)] 
+ syntax Exp ::= Exp "*" Exp [symbol(times)]
+ syntax Exp ::= Int [symbol(inj)] 
 endmodule 
 
 input(Int): 1
