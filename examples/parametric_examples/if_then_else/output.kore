@@ -9,13 +9,39 @@ module TEST
  symbol inj{SIn,SOut}(SIn): SOut []
 
  symbol eq{}(Exp{}, Exp{}) : Exp{} []
- symbol lt{}(Exp{}, Exp{}) : Exp{} []
- symbol gt{}(Exp{}, Exp{}) : Exp{} []
- symbol it{}(Exp{}, Stmt{}) : Stmt{} []
- symbol ite{}(Exp{}, Stmt{}, Stmt{}) : Stmt{} []
-
+ symbol ite{S}(Exp{}, S, S) : Stmt{} []
 
  axiom{}
+ ite{Var{}}(eq{}(inj{Var{}, Exp{}}(\dv{Var{}}("x")), inj{Var{}, Exp{}}(\dv{Var{}}("y"))),
+            \dv{Var{}}("s1"),
+            \dv{Var{}}("s1")) []
+
+ axiom{}
+ ite{Stmt{}}(eq{}(inj{Var{}, Exp{}}(\dv{Var{}}("x")), inj{Var{}, Exp{}}(\dv{Var{}}("y"))),
+            inj{Var{}, Stmt{}}(\dv{Var{}}("s1")),
+            inj{Var{}, Stmt{}}(\dv{Var{}}("s1"))) []
+
+ // ambiguous when sort not instantiated, should we infer top sort, report ambiguities...?
+ axiom{}
+ \or{LogicLevel{}}(
+    inj{Stmt{}, LogicLevel{}}(
+           ite{Var{}}(eq{}(inj{Var{}, Exp{}}(\dv{Var{}}("x")), inj{Var{}, Exp{}}(\dv{Var{}}("y"))),
+                                             \dv{Var{}}("s1"),
+                                             \dv{Var{}}("s1"))
+    ),
+    \or{LogicLevel{}}(
+       inj{Stmt{}, LogicLevel{}}(
+              ite{Exp{}}(eq{}(inj{Var{}, Exp{}}(\dv{Var{}}("x")), inj{Var{}, Exp{}}(\dv{Var{}}("y"))),
+                                                inj{Var{}, Exp{}}(\dv{Var{}}("s1")),
+                                                inj{Var{}, Exp{}}(\dv{Var{}}("s1")))
+       ),
+       inj{Stmt{}, LogicLevel{}}(
+              ite{Stmt{}}(eq{}(inj{Var{}, Exp{}}(\dv{Var{}}("x")), inj{Var{}, Exp{}}(\dv{Var{}}("y"))),
+                                                inj{Var{}, Stmt{}}(\dv{Var{}}("s1")),
+                                                inj{Var{}, Stmt{}}(\dv{Var{}}("s1")))
+       )
+    )
+ ) []
 
 endmodule []
 
