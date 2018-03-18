@@ -1,0 +1,18 @@
+// KORE specification
+[]
+module TEST
+ sort Stmt{} []
+ sort Exp{} []
+ sort Int{} []
+ sort Type{} []
+ sort Var{} []
+
+ symbol inj{SIn,SOut}(SIn): SOut []
+ 
+ symbol tstmt{}(Type{}, Exp{}): Stmt{} []
+ symbol stmt{}(Exp{}): Stmt{} []
+ symbol rshift{}(Exp{}, Exp{}): Exp{} []
+ symbol ptype{}(Type{}, Type{}): Type{} []
+
+ 
+endmodule []
