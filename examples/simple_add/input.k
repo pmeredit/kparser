@@ -1,5 +1,5 @@
 module TEST 
- syntax Int ::= r"[0-9]+" [token] 
+ syntax Int ::= r"[0-9]+"  
  syntax Exp ::= Exp "+" Exp [klabel(plus)] 
  syntax Exp ::= Int [klabel(inj)] 
 endmodule 

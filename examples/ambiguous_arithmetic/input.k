@@ -1,6 +1,6 @@
 module TEST 
- syntax Int ::= r"[0-9]+" [token] 
- syntax Var ::= r"[A-Z][a-zA-Z0-9]*" [token]
+ syntax Int ::= r"[0-9]+"  
+ syntax Var ::= r"[A-Z][a-zA-Z0-9]*" 
  syntax Exp ::= Int
  syntax Exp ::= Var 
  syntax Exp ::= Exp "+" Exp [symbol(plus)] 
