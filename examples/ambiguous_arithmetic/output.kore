@@ -5,9 +5,9 @@ module TEST
  sort Var{} []
  sort Exp{} []
 
- symbol inj{SIn,SOut}(SIn): SOut []
  symbol plus{}(Exp{}, Exp{}): Exp{} []
  symbol times{}(Exp{}, Exp{}): Exp{} []
+ symbol inj{SIn,SOut}(SIn): SOut []
 
  axiom{} \dv{Int{}}("1") []
  axiom{} inj{Int{},Exp{}}(\dv{Int{}}("1")) []
@@ -16,29 +16,37 @@ module TEST
             plus{}(plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))),inj{Int{},Exp{}}(\dv{Int{}}("3"))),
             plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),plus{}(inj{Int{},Exp{}}(\dv{Int{}}("2")),inj{Int{},Exp{}}(\dv{Int{}}("3"))))
             ) []
- axiom{} \and{Exp{}}(
-   \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("X")), inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
+ axiom{} 
+ \exists{Exp{}}(X:Exp{},
+ \exists{Exp{}}(Y:Exp{},
+ \exists{Exp{}}(Z:Exp{},
+ \exists{Exp{}}(Q:Exp{},
+ \exists{Exp{}}(XPY:Exp{},
+ \exists{Exp{}}(ZPQ:Exp{},
+ \exists{Exp{}}(YTZ:Exp{},
+ \and{Exp{}}(
+   \equals{Exp{}, Exp{}}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
    \and{Exp{}}(
-      \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Y")), inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
+      \equals{Exp{}, Exp{}}(Y:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
       \and{Exp{}}(
-         \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Z")), inj{Int{}, Exp{}}(\dv{Int{}}("3"))),
+         \equals{Exp{}, Exp{}}(Z:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("3"))),
          \and{Exp{}}(
-            \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("Q")), inj{Var{},Exp{}}(\dv{Var{}}("VAR"))),
+            \equals{Exp{}, Exp{}}(Q:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("VAR"))),
             \and{Exp{}}(
-               \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")),inj{Var{},Exp{}}(\dv{Var{}}("Y")))),
+               \equals{Exp{}, Exp{}}(XPY:Exp{}, plus{}(X:Exp{},Y:Exp{})),
                \and{Exp{}}(
-                  \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("ZPQ")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("Z")),inj{Var{},Exp{}}(\dv{Var{}}("Q")))),
+                  \equals{Exp{}, Exp{}}(ZPQ:Exp{}, plus{}(Z:Exp{},Q:Exp{})),
                   \and{Exp{}}(
-                     \equals{Exp{}, Exp{}}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), times{}(inj{Var{},Exp{}}(\dv{Var{}}("Y")),inj{Var{},Exp{}}(\dv{Var{}}("Z")))),
+                     \equals{Exp{}, Exp{}}(YTZ:Exp{}, times{}(Y:Exp{},Z:Exp{})),
                      \or{Exp{}}(
-                        times{}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")),inj{Var{},Exp{}}(\dv{Var{}}("ZPQ"))),
+                        times{}(XPY:Exp{},ZPQ:Exp{}),
                         \or{Exp{}}(
-                           plus{}(times{}(inj{Var{},Exp{}}(\dv{Var{}}("XPY")), inj{Var{},Exp{}}(\dv{Var{}}("Z"))), inj{Var{},Exp{}}(\dv{Var{}}("Q"))),
+                           plus{}(times{}(XPY:Exp{}, Z:Exp{}), Q:Exp{}),
                            \or{Exp{}}(
-                              plus{}(plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), inj{Var{},Exp{}}(\dv{Var{}}("YTZ"))), inj{Var{},Exp{}}(\dv{Var{}}("Q"))),
+                              plus{}(plus{}(X:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("YTZ"))), Q:Exp{}),
                               \or{Exp{}}(
-                                 plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), plus{}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), inj{Var{},Exp{}}(\dv{Var{}}("Q")))),
-                                 plus{}(inj{Var{},Exp{}}(\dv{Var{}}("X")), times{}(inj{Var{},Exp{}}(\dv{Var{}}("Y")), inj{Var{},Exp{}}(\dv{Var{}}("ZPQ"))))
+                                 plus{}(X:Exp{}, plus{}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), Q:Exp{})),
+                                 plus{}(X:Exp{}, times{}(Y:Exp{}, ZPQ:Exp{}))
 		              )
 			   )
 		     	)
@@ -49,5 +57,5 @@ module TEST
          )
       )
    )
- ) []  
+ )))))))) []  
 endmodule []

@@ -3,8 +3,8 @@
 module TEST
  sort Int{} []
  sort Exp{} []
- symbol inj{SIn,SOut}(SIn): SOut []
  symbol plus{}(Exp{}, Exp{}): Exp{} []
+ symbol inj{SIn,SOut}(SIn): SOut []
 
  axiom{} \dv{Int{}}("1") []
  axiom{} inj{Int{},Exp{}}(\dv{Int{}}("1")) []
