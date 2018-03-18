@@ -1,0 +1,27 @@
+// KORE specification
+[]
+module TEST
+ sort Int{} []
+ sort Exp{} []
+ symbol plus{}(Exp{}, Exp{}): Exp{} []
+ symbol app{}(Exp{}, Exp{}): Exp{} []
+ symbol inj{SIn,SOut}(SIn): SOut []
+ 
+ axiom{} \dv{Int{}}("1") []
+ axiom{} inj{Int{},Exp{}}(\dv{Int{}}("1")) []
+ axiom{} inj{Int{},Exp{}}(\dv{Int{}}("+1")) []
+ axiom{} inj{Int{},Exp{}}(\dv{Int{}}("-1")) []
+ axiom{} 
+ \exists{Exp{}}(X:Exp{}, 
+    \and{Exp{}}(
+       \equals{Exp{}, Exp{}}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
+          \or{Exp{}}(
+	     plus{}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
+	     app{}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("+2")))
+          )
+       )
+    ) []
+axiom{} plus{}(inj{Int{}, Exp{}}(\dv{Int{}}("1")), 
+               inj{Int{}, Exp{}}(\dv{Int{}}("+2"))) []
+
+endmodule []
