@@ -1,0 +1,70 @@
+// KORE specification
+[]
+module TEST
+ sort Exp{}  []
+ sort Stmt{} []
+ sort Type{} []
+ sort Var{}  []
+ sort LogicLevel{} []
+
+ symbol inj{SIn,SOut}(SIn): SOut []
+
+ symbol eq{}(Exp{}, Exp{}) : Exp{} []
+ symbol lt{}(Exp{}, Exp{}) : Exp{} []
+ symbol gt{}(Exp{}, Exp{}) : Exp{} []
+ symbol it{}(Exp{}, Stmt{}) : Stmt{} []
+ symbol ite{}(Exp{}, Stmt{}, Stmt{}) : Stmt{} []
+
+
+ axiom{}
+ \exists{LogicLevel{}}(c1:Exp{}, 
+ \exists{LogicLevel{}}(c2:Exp{}, 
+ \exists{LogicLevel{}}(c3:Exp{}, 
+ \exists{LogicLevel{}}(c4:Exp{}, 
+ \exists{LogicLevel{}}(s1:Stmt{}, 
+ \exists{LogicLevel{}}(s2:Stmt{}, 
+    \and{LogicLevel{}}(
+       \equals{Exp{}, LogicLevel{}}(c1:Exp{}, inj{Var{}, Exp{}}(\dv{Var{}}("c1"))), 
+       \and{LogicLevel{}}(
+           \equals{Exp{}, LogicLevel{}}(c2:Exp{}, inj{Var{}, Exp{}}(\dv{Var{}}("c2"))),  
+           \and{LogicLevel{}}(
+               \equals{Exp{}, LogicLevel{}}(c3:Exp{}, inj{Var{}, Exp{}}(\dv{Var{}}("c3"))), 
+               \and{LogicLevel{}}(
+                  \equals{Exp{}, LogicLevel{}}(c4:Exp{}, inj{Var{}, Exp{}}(\dv{Var{}}("c4"))), 
+                  \and{LogicLevel{}}(
+		     // note we inject straight from Var to Stmt, skipping Exp. We will want to do that
+		     // if we can prove a transitive subsort.
+                     \equals{Stmt{}, LogicLevel{}}(s1:Stmt{}, inj{Var{}, Stmt{}}(\dv{Var{}}("s1"))), 
+                     \and{LogicLevel{}}(
+                         \equals{Stmt{}, LogicLevel{}}(s1:Stmt{}, inj{Var{}, Stmt{}}(\dv{Var{}}("s1"))), 
+		         \or{LogicLevel{}}(
+                            inj{Stmt{}, LogicLevel{}}(
+                                it{}(eq{}(c1:Exp{}, c2:Exp{}), 
+			             ite{}(lt{}(c3:Exp{}, c4:Exp{}), s1:Stmt{}, s2:Stmt{})
+			        )
+			    ),
+                            inj{Stmt{}, LogicLevel{}}(
+                                ite{}(eq{}(c1:Exp{}, c2:Exp{}), 
+		    	             it{}(lt{}(c3:Exp{}, c4:Exp{}), s1:Stmt{}), 
+		    	             s2:Stmt{}
+		      	        )     
+			    )
+		         )
+		     )
+	         )
+              )
+          )
+       )
+    )
+ )
+ )
+ )
+ )
+ )
+ )
+ []
+
+// if c1 == c2 then (if c3 < c4 then s1 else s2)
+// if c1 == c2 then (if c3 < c4 then s1) else s2
+endmodule []
+
