@@ -35,11 +35,18 @@ module TEST
 		       Foo:Exp{}
 	            )
 		 ),
-	         inj{Stmt{}, LogicLevel{}}(
-                    stmt{}(
-		       rshift{}(lt{}(lt{}(HashSetE:Exp{}, HashSetE:Exp{}), StringE:Exp{}), Foo:Exp{})
-	            )
-		 )
+              	 \or{LogicLevel{}}(
+	            inj{Stmt{}, LogicLevel{}}(
+                       stmt{}(
+		          rshift{}(lt{}(lt{}(HashSetE:Exp{}, HashSetE:Exp{}), StringE:Exp{}), Foo:Exp{})
+	               )
+		    ),
+	            inj{Stmt{}, LogicLevel{}}(
+                       stmt{}(
+		          rshift{}(lt{}(HashSetE:Exp{}, lt{}(HashSetE:Exp{}, StringE:Exp{})), Foo:Exp{})
+	               )
+		    )
+	         )
 	      )
            )
         )
