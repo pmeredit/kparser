@@ -5,7 +5,6 @@ module TEST
  syntax Exp ::= Var 
  syntax Exp ::= Exp "+" Exp [symbol(plus)] 
  syntax Exp ::= Exp "*" Exp [symbol(times)]
- syntax Exp ::= Int [symbol(inj)] 
 endmodule 
 
 input(Int): 1
