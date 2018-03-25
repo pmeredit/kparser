@@ -1,0 +1,90 @@
+// KORE specification
+[]
+module TEST
+ // We need a sort for unparsed text, this will exist in any theory.
+ sort UnParsed{} []
+ // LogicLevel is used as a "Top" sort (like K in pervious versions).
+ // Name can be rethrought.
+ sort LogicLevel{} []
+
+ // Sorts derived from the K definition.
+ sort Int{} []
+ sort Var{} []
+ sort Exp{} []
+
+ // Automatically created symbols for any definition. Note that
+ // parse{S} takes an UnParsed.
+ symbol parse{S}(UnParsed{}): S []
+ symbol inj{SIn,SOut}(SIn): SOut []
+
+ symbol plus{}(Exp{}, Exp{}): Exp{} []
+ symbol times{}(Exp{}, Exp{}): Exp{} []
+
+ axiom{} \equals{Int{}, LogicLevel{}}(
+     parse{Int{}}(\dv{UnParsed{}}("1")), \dv{Int{}}("1")
+     ) []
+
+ axiom{} \equals{Exp{}, LogicLevel{}}(
+      parse{Exp{}}(\dv{UnParsed{}}("1")), inj{Int{},Exp{}}(\dv{Int{}}("1"))
+     ) []
+
+
+ axiom{} \equals{Exp{}, LogicLevel{}}(
+      parse{Exp{}}(\dv{UnParsed{}}("1+2")), plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2")))
+     ) []
+
+ axiom{} \equals{Exp{}, LogicLevel{}}(
+         parse{Exp{}}(\dv{UnParsed{}}("1+2+3")),
+         \or{Exp{}}(
+            plus{}(plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))),inj{Int{},Exp{}}(\dv{Int{}}("3"))),
+            plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),plus{}(inj{Int{},Exp{}}(\dv{Int{}}("2")),inj{Int{},Exp{}}(\dv{Int{}}("3"))))
+            )
+	    ) []
+
+ // There is no need for a LogicLevel here, but likely we should include it in all examples,
+ // since we'll like want to generated it to encode sharing.
+ axiom{}
+ \equals{Exp{}, LogicLevel{}}(
+ parse{Exp{}}(\dv{UnParsed{}}("1+2*3+VAR")),
+ \exists{Exp{}}(X:Exp{},
+ \exists{Exp{}}(Y:Exp{},
+ \exists{Exp{}}(Z:Exp{},
+ \exists{Exp{}}(Q:Exp{},
+ \exists{Exp{}}(XPY:Exp{},
+ \exists{Exp{}}(ZPQ:Exp{},
+ \exists{Exp{}}(YTZ:Exp{},
+ \and{Exp{}}(
+   \equals{Exp{}, Exp{}}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
+   \and{Exp{}}(
+      \equals{Exp{}, Exp{}}(Y:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
+      \and{Exp{}}(
+         \equals{Exp{}, Exp{}}(Z:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("3"))),
+         \and{Exp{}}(
+            \equals{Exp{}, Exp{}}(Q:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("VAR"))),
+            \and{Exp{}}(
+               \equals{Exp{}, Exp{}}(XPY:Exp{}, plus{}(X:Exp{},Y:Exp{})),
+               \and{Exp{}}(
+                  \equals{Exp{}, Exp{}}(ZPQ:Exp{}, plus{}(Z:Exp{},Q:Exp{})),
+                  \and{Exp{}}(
+                     \equals{Exp{}, Exp{}}(YTZ:Exp{}, times{}(Y:Exp{},Z:Exp{})),
+                     \or{Exp{}}(
+                        times{}(XPY:Exp{},ZPQ:Exp{}),
+                        \or{Exp{}}(
+                           plus{}(times{}(XPY:Exp{}, Z:Exp{}), Q:Exp{}),
+                           \or{Exp{}}(
+                              plus{}(plus{}(X:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("YTZ"))), Q:Exp{}),
+                              \or{Exp{}}(
+                                 plus{}(X:Exp{}, plus{}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), Q:Exp{})),
+                                 plus{}(X:Exp{}, times{}(Y:Exp{}, ZPQ:Exp{}))
+		              )
+			   )
+		     	)
+		     )
+                  )
+               )
+            )
+         )
+      )
+   )
+ ))))))))) []
+endmodule []
