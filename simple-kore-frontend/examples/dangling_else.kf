@@ -1,0 +1,34 @@
+input{}(0,1) ={String, Stmt} "if"
+and{Stmt}
+input{}(3,4) ={String, Stmt} "c1"
+and{Stmt}
+input{}(6,7) ={String, Stmt} "=="
+and{Stmt}
+input{}(9,10) ={String, Stmt} "c2"
+and{Stmt}
+input{}(12,15) ={String, Stmt} "then"
+and{Stmt}
+input{}(17,18) ={String, Stmt} "if"
+and{Stmt}
+input{}(20,21) ={String, Stmt} "c3"
+and{Stmt}
+input{}(23,23) ={String, Stmt} "<"
+and{Stmt}
+input{}(25,26) ={String, Stmt} "c4"
+and{Stmt}
+input{}(28,31) ={String, Stmt} "then"
+and{Stmt}
+input{}(33,34) ={String, Stmt} "s1"
+and{Stmt}
+input{}(36,39) ={String, Stmt} "else"
+and{Stmt}
+input{}(41,42) ={String, Stmt} "s2"
+and{Stmt}
+(Exists{Stmt} c1:Exp .
+Exists{Stmt} c2:Exp .
+Exists{Stmt} c3:Exp .
+Exists{Stmt} c4:Exp .
+Exists{Stmt} s1:Stmt .
+Exists{Stmt} s2:Stmt .
+lt{}(c3:Exp, c4:Exp)
+)
