@@ -6,6 +6,8 @@ pub enum Expr {
     Float(f64),
     Str(String),
     Var(String),
+    MetaVar(String),
+    Quant(BinOpcode, String, String, Box<Expr>),
     Func(String, Vec<String>, Vec<Box<Expr>>),
     DualSortOp(Box<Expr>, DualSortOpcode, String, String, Box<Expr>),
     UnOp(UnOpcode, String, Box<Expr>),
@@ -20,6 +22,9 @@ impl fmt::Display for Expr {
             Float(ref n) => write!(f, "\\dv{{Real{{}}}}(\"{}\")", n),
             Str(ref s) => write!(f, "\\dv{{String{{}}}}(\"{}\")", s),
             Var(ref v) => write!(f, "\\dv{{Var{{}}}}(\"{}\")", v),
+            MetaVar(ref v) => write!(f, "{}{{}}", v),
+            Quant(ref op, ref s, ref v, ref exp) =>
+                write!(f, "{}{{{}{{}}}}({}{{}}, {})", op, s, v, exp),
             Func(ref s, ref sl, ref el) => {
                 let sls = sl
                     .into_iter()
@@ -31,9 +36,9 @@ impl fmt::Display for Expr {
                     .fold("".to_string(), |acc, y| format!("{},\n{}", acc, y));
                 write!(f, "{}{{{}}}({})\n", s, sls, els)
             },
-            DualSortOp(ref le, ref o, ref s1, ref s2, ref re) => write!(f, "{}{{{},{}}}({},\n{})\n", o, s1, s2, le, re),
-            UnOp(ref o, ref s, ref e) => write!(f, "{}{{{}}}({})\n", o, s, e),
-            BinOp(ref le, ref o, ref s, ref re) => write!(f, "{}{{{}}}({},\n{})\n", o, s, le, re),
+            DualSortOp(ref le, ref o, ref s1, ref s2, ref re) => write!(f, "{}{{{}{{}},{}{{}}}}({},\n{})\n", o, s1, s2, le, re),
+            UnOp(ref o, ref s, ref e) => write!(f, "{}{{{}{{}}}}({})\n", o, s, e),
+            BinOp(ref le, ref o, ref s, ref re) => write!(f, "{}{{{}{{}}}}({},\n{})\n", o, s, le, re),
         }
     }
 }

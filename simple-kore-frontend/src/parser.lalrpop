@@ -12,6 +12,7 @@ match {
     r"-?[0-9]+"                                => INT,
     r"-?([0-9]*[.][0-9]+)"                     => FLOAT,
     r"[a-zA-Z_]\w*"                            => VAR,
+    r"[a-zA-Z_]\w*:[a-zA-Z_]\w*"               => METAVAR,
     "=", "=>", "(", ")", ".", "{", "}", ",",
     "or", "and", "Exists", "ForAll", "In",  "<=>",
 }
@@ -21,7 +22,8 @@ pub TopExpr: Box<Expr> =  {
 };
 
 Quantifier: Box<Expr> = {
-    <op:ExistsOrForAll> "{" <sort:Var> "}" <var:Var> "." <quant:Quantifier> => Box::new(Expr::BinOp(Box::new(Expr::Var(var)), op, sort, quant)),
+    <op:ExistsOrForAll> "{" <sort:Var> "}" <var:MetaVar> "." <quant:Quantifier> => 
+           Box::new(Expr::Quant(op, sort, var, quant)),
     OrExpr,
 };
 
@@ -81,6 +83,7 @@ BottomExpr: Box<Expr> = {
     Int                           => Box::new(Expr::Int(<>)),
     Float                         => Box::new(Expr::Float(<>)),
     Var                           => Box::new(Expr::Var(<>)),
+    MetaVar                       => Box::new(Expr::MetaVar(<>)),
     <v:Var> "{" <vl:VarList> "}" "(" <el:ExprList> ")" => Box::new(Expr::Func(v, vl, el)),
     "(" <TopExpr> ")",
 };
@@ -100,4 +103,8 @@ Float: f64 = {
 
 Var: String = {
      VAR => <>.to_string(),
+};
+
+MetaVar: String = {
+     METAVAR => <>.to_string(),
 };
