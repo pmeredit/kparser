@@ -1,0 +1,24 @@
+[package]
+name = "simple_kore_frontend"
+version = "0.1.0"
+authors = ["Patrick Meredith <pmeredit@gmail.com>"]
+build = "build.rs"
+
+[build-dependencies]
+lalrpop = "0.15.0"
+
+[dependencies]
+lalrpop-util = "0.13.1"
+regex = "0.2.1"
+indoc = "0.2"
+lazy_static = "0.2"
+clap = "2.29.2"
+
+[lib]
+name = "simple_kore_frontend"
+path = "src/lib.rs"
+
+[[bin]]
+name = "skf"
+path = "src/main.rs"
+

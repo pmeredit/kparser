@@ -1,0 +1,103 @@
+use std::str::FromStr;
+use ast::*;
+
+grammar;
+
+
+match {
+    //no idea why this regexp won't work
+    //r#"('([^'\\]|\\.)*')|("([^"\\]|\\.)*")"# => STRING,
+    r#"'([^'\\]|\\.)*'"#                       => SINGLESTRING,
+    r#""([^"\\]|\\.)*""#  	               => DOUBLESTRING,
+    r"-?[0-9]+"                                => INT,
+    r"-?([0-9]*[.][0-9]+)"                     => FLOAT,
+    r"[a-zA-Z_]\w*"                            => VAR,
+    "=", "=>", "(", ")", ".", "{", "}", ",",
+    "or", "and", "Exists", "ForAll", "In",  "<=>",
+}
+
+pub TopExpr: Box<Expr> =  {
+    Quantifier,
+};
+
+Quantifier: Box<Expr> = {
+    <op:ExistsOrForAll> "{" <sort:Var> "}" <var:Var> "." <quant:Quantifier> => Box::new(Expr::BinOp(Box::new(Expr::Var(var)), op, sort, quant)),
+    OrExpr,
+};
+
+ExistsOrForAll: BinOpcode = {
+    "ForAll" => BinOpcode::ForAll,
+    "Exists" => BinOpcode::Exists,
+};
+
+Tier<Op,NextTier>: Box<Expr> = {
+    <l:Tier<Op,NextTier>> <op:Op> "{" <sort:Var> "}" <r:NextTier> => Box::new(Expr::BinOp(l, op, sort, r)),
+    NextTier,
+};
+
+OrExpr           = Tier<OrOp,          AndExpr         >;
+AndExpr          = Tier<AndOp,         ImplicationExpr >;
+ImplicationExpr  = Tier<ImplicationOp, EqualsExpr      >;
+
+OrOp: BinOpcode = {
+    "or" => BinOpcode::Or,
+};
+
+AndOp: BinOpcode = {
+    "and"  => BinOpcode::And,
+};
+
+ImplicationOp: BinOpcode = {
+    "=>"   => BinOpcode::Implies,
+    "<=>"  => BinOpcode::Iff,
+};
+
+EqualsExpr: Box<Expr> = {
+    <e1:EqualsExpr> <op:EqualsOp> "{" <s1:Var> "," <s2:Var> "}" <e2:BottomExpr> => Box::new(Expr::DualSortOp(e1, op, s1, s2, e2)),
+    BottomExpr,
+};
+
+EqualsOp: DualSortOpcode = {
+    "=" => DualSortOpcode::Equals,
+    "In" => DualSortOpcode::In,
+};
+
+List<T, Sep>: Vec<T> = {
+    <v:(<T> Sep)*> <e:T?> => match e {
+        None=> v,
+        Some(e) => {
+            let mut v = v;
+            v.push(e);
+            v
+        }
+    }
+};
+
+ExprList = List<TopExpr, ",">;
+VarList  = List<Var, ",">;
+
+BottomExpr: Box<Expr> = {
+    Str                           => Box::new(Expr::Str(<>)),
+    Int                           => Box::new(Expr::Int(<>)),
+    Float                         => Box::new(Expr::Float(<>)),
+    Var                           => Box::new(Expr::Var(<>)),
+    <v:Var> "{" <vl:VarList> "}" "(" <el:ExprList> ")" => Box::new(Expr::Func(v, vl, el)),
+    "(" <TopExpr> ")",
+};
+
+Str: String = {
+     SINGLESTRING => String::from(&<>[1..<>.len()-1]),
+     DOUBLESTRING => String::from(&<>[1..<>.len()-1]),
+};
+
+Int: i64 = {
+     INT => i64::from_str(<>).unwrap(),
+};
+
+Float: f64 = {
+     FLOAT => f64::from_str(<>).unwrap(),
+};
+
+Var: String = {
+     VAR => <>.to_string(),
+};
