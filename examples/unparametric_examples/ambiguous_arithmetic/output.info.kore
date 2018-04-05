@@ -1,0 +1,220 @@
+// KORE specification
+[]
+module TEST
+ sort String{} []
+ sort Int{} []
+ symbol sl{}(String{}, String{}): String{} []
+ symbol inj{SIn,SOut}(SIn): SOut []
+ symbol info{S} (String{}, S): S [] // add meta info to asd node
+ symbol input{}(Int{}, Int{}): String{} [] // holds parsed substring from start to end positions
+
+ sort Var{} []
+ sort Exp{} []
+
+ symbol plus{}(Exp{}, Exp{}): Exp{} []
+ symbol times{}(Exp{}, Exp{}): Exp{} []
+
+axiom{}
+\and{Int{}}(\equals{String{},Int{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("1"))
+,
+info{Int{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+\dv{Int{}}("1"))
+)
+[]
+
+axiom{}
+\and{Exp{}}(\equals{String{},Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("1"))
+,
+info{Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("1"))
+)
+)
+[]
+
+axiom{}
+\and{Exp{}}(\and{Exp{}}(\and{Exp{}}(\equals{String{},Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("1"))
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("1"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("+"))
+)
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("2"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("2"))
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("1"),
+\dv{Int{}}("1"))
+,
+plus{}(info{Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("1"))
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("2"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("2"))
+)
+)
+)
+)
+[]
+
+axiom{}
+\and{Exp{}}(\and{Exp{}}(\and{Exp{}}(\and{Exp{}}(\and{Exp{}}(\equals{String{},Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("1"))
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("1"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("+"))
+)
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("2"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("2"))
+)
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("3"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("+"))
+)
+,
+\equals{String{},Exp{}}(input{}(\dv{Int{}}("4"),
+\dv{Int{}}("1"))
+,
+\dv{String{}}("3"))
+)
+,
+\or{Exp{}}(info{Exp{}}(input{}(\dv{Int{}}("1"),
+\dv{Int{}}("1"))
+,
+plus{}(info{Exp{}}(input{}(\dv{Int{}}("3"),
+\dv{Int{}}("1"))
+,
+plus{}(info{Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("1"))
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("2"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("2"))
+)
+)
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("4"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("3"))
+)
+)
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("1"),
+\dv{Int{}}("1"))
+,
+plus{}(info{Exp{}}(input{}(\dv{Int{}}("0"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("1"))
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("3"),
+\dv{Int{}}("1"))
+,
+plus{}(info{Exp{}}(input{}(\dv{Int{}}("2"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("2"))
+)
+,
+info{Exp{}}(input{}(\dv{Int{}}("4"),
+\dv{Int{}}("1"))
+,
+inj{Int{},Exp{}}(\dv{Int{}}("3"))
+)
+)
+)
+)
+)
+)
+)
+[]
+
+// Not converted yet
+ axiom{} \or{Exp{}}(
+            plus{}(plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),inj{Int{},Exp{}}(\dv{Int{}}("2"))),inj{Int{},Exp{}}(\dv{Int{}}("3"))),
+            plus{}(inj{Int{},Exp{}}(\dv{Int{}}("1")),plus{}(inj{Int{},Exp{}}(\dv{Int{}}("2")),inj{Int{},Exp{}}(\dv{Int{}}("3"))))
+            ) []
+
+ // There is no need for a LogicLevel here, but likely we should include it in all examples,
+ // since we'll like want to generated it to encode sharing.
+ axiom{} 
+ \exists{Exp{}}(X:Exp{},
+ \exists{Exp{}}(Y:Exp{},
+ \exists{Exp{}}(Z:Exp{},
+ \exists{Exp{}}(Q:Exp{},
+ \exists{Exp{}}(XPY:Exp{},
+ \exists{Exp{}}(ZPQ:Exp{},
+ \exists{Exp{}}(YTZ:Exp{},
+ \and{Exp{}}(
+   \equals{Exp{}, Exp{}}(X:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("1"))),
+   \and{Exp{}}(
+      \equals{Exp{}, Exp{}}(Y:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("2"))),
+      \and{Exp{}}(
+         \equals{Exp{}, Exp{}}(Z:Exp{}, inj{Int{}, Exp{}}(\dv{Int{}}("3"))),
+         \and{Exp{}}(
+            \equals{Exp{}, Exp{}}(Q:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("VAR"))),
+            \and{Exp{}}(
+               \equals{Exp{}, Exp{}}(XPY:Exp{}, plus{}(X:Exp{},Y:Exp{})),
+               \and{Exp{}}(
+                  \equals{Exp{}, Exp{}}(ZPQ:Exp{}, plus{}(Z:Exp{},Q:Exp{})),
+                  \and{Exp{}}(
+                     \equals{Exp{}, Exp{}}(YTZ:Exp{}, times{}(Y:Exp{},Z:Exp{})),
+                     \or{Exp{}}(
+                        times{}(XPY:Exp{},ZPQ:Exp{}),
+                        \or{Exp{}}(
+                           plus{}(times{}(XPY:Exp{}, Z:Exp{}), Q:Exp{}),
+                           \or{Exp{}}(
+                              plus{}(plus{}(X:Exp{}, inj{Var{},Exp{}}(\dv{Var{}}("YTZ"))), Q:Exp{}),
+                              \or{Exp{}}(
+                                 plus{}(X:Exp{}, plus{}(inj{Var{},Exp{}}(\dv{Var{}}("YTZ")), Q:Exp{})),
+                                 plus{}(X:Exp{}, times{}(Y:Exp{}, ZPQ:Exp{}))
+		              )
+			   )
+		     	)
+		     )
+                  )
+               )
+            )
+         )
+      )
+   )
+ )))))))) []  
+endmodule []

@@ -1,0 +1,4 @@
+input{}(0,1) ={String, Exp} "1"
+and{Exp}
+info{Exp}(input{}(0,1), inj{Int,Exp}(1))
+

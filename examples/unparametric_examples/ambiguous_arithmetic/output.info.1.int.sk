@@ -1,0 +1,4 @@
+input{}(0,1) ={String, Int} "1"
+and{Int}
+info{Int}(input{}(0,1), 1)
+

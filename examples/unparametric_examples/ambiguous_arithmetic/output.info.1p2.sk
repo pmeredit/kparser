@@ -1,0 +1,14 @@
+input{}(0,1) ={String, Exp} "1"
+and{Exp}
+input{}(1,1) ={String, Exp} "+"
+and{Exp}
+input{}(2,1) ={String, Exp} "2"
+and{Exp}
+info{Exp}(input{}(1,1),
+plus{}(
+info{Exp}(input{}(0,1),
+inj{Int,Exp}(1)),
+info{Exp}(input{}(2,1),
+inj{Int,Exp}(2)),
+))
+

@@ -29,11 +29,13 @@ impl fmt::Display for Expr {
                 let sls = sl
                     .into_iter()
                     .map(|x| format!("{}", x))
-                    .fold("".to_string(), |acc, y| format!("{},{}", acc, y));
+                    .fold("".to_string(), |acc, y| if acc.len() == 0 { format!("{}{{}}", y) }
+                                                   else { format!("{},{}{{}}", acc, y) });
                 let els = el
                     .into_iter()
                     .map(|x| format!("{}", x))
-                    .fold("".to_string(), |acc, y| format!("{},\n{}", acc, y));
+                    .fold("".to_string(), |acc, y| if acc.len() == 0 { format!("{}", y) }
+                                                   else { format!("{},\n{}", acc, y) });
                 write!(f, "{}{{{}}}({})\n", s, sls, els)
             },
             DualSortOp(ref le, ref o, ref s1, ref s2, ref re) => write!(f, "{}{{{}{{}},{}{{}}}}({},\n{})\n", o, s1, s2, le, re),

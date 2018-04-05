@@ -1,0 +1,42 @@
+input{}(0,1) ={String, Exp} "1"
+and{Exp}
+input{}(1,1) ={String, Exp} "+"
+and{Exp}
+input{}(2,1) ={String, Exp} "2"
+and{Exp}
+input{}(3,1) ={String, Exp} "+"
+and{Exp}
+input{}(4,1) ={String, Exp} "3"
+and{Exp}
+(
+info{Exp}(input{}(1,1),
+plus{}(
+info{Exp}(input{}(3,1),
+plus{}(
+info{Exp}(input{}(0,1),
+inj{Int,Exp}(1)),
+info{Exp}(input{}(2,1),
+inj{Int,Exp}(2)),
+)),
+info{Exp}(input{}(4,1),
+inj{Int,Exp}(3)),
+)
+)
+
+or{Exp}
+
+info{Exp}(input{}(1,1),
+plus{}(
+info{Exp}(input{}(0,1),
+inj{Int,Exp}(1)),
+info{Exp}(input{}(3,1),
+plus{}(
+info{Exp}(input{}(2,1),
+inj{Int,Exp}(2)),
+info{Exp}(input{}(4,1),
+inj{Int,Exp}(3)),
+)),
+)
+)
+
+)
