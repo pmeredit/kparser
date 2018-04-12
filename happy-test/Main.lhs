@@ -21,7 +21,9 @@ This requires CPP / preprocessing; use Hugs.lhs for tests with Hugs
 > formatBranches :: [Branch] -> String
 > formatBranches [] = ""
 > formatBranches (br:[]) = show $ b_sem br
-> formatBranches (br1:br2:brs) =  show (b_sem br1) ++ " \\/ " ++ show (b_sem br2) ++ (formatBranches  brs)
+> formatBranches (br:brs) =  show (b_sem br) ++ (if brs == []
+>                                                then "" 
+>												 else " \\/ " ++ (formatBranches  brs))
 
 > main
 >  = do
