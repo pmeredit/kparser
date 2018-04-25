@@ -1,0 +1,12 @@
+./expr "1 + 2 * 3 + foobar"
+info((0,1,G_E), ([(0,1,HappyTok (AnInt {getInt = 1}))]))
+/\ info((0,3,G_E), ([(0,1,G_E),(1,2,HappyTok (Sym "+")),(2,3,G_E)]))
+/\ info((0,5,G_E), ([(0,1,G_E),(1,2,HappyTok (Sym "+")),(2,5,G_E)] \/ [(0,3,G_E),(3,4,HappyTok (Sym "*")),(4,5,G_E)]))
+/\ info((0,7,G_E), ([(0,3,G_E),(3,4,HappyTok (Sym "*")),(4,7,G_E)] \/ [(0,1,G_E),(1,2,HappyTok (Sym "+")),(2,7,G_E)] \/ [(0,5,G_E),(5,6,HappyTok (Sym "+")),(6,7,G_E)]))
+/\ info((2,3,G_E), ([(2,3,HappyTok (AnInt {getInt = 2}))]))
+/\ info((2,5,G_E), ([(2,3,G_E),(3,4,HappyTok (Sym "*")),(4,5,G_E)]))
+/\ info((2,7,G_E), ([(2,3,G_E),(3,4,HappyTok (Sym "*")),(4,7,G_E)] \/ [(2,5,G_E),(5,6,HappyTok (Sym "+")),(6,7,G_E)]))
+/\ info((4,5,G_E), ([(4,5,HappyTok (AnInt {getInt = 3}))]))
+/\ info((4,7,G_E), ([(4,5,G_E),(5,6,HappyTok (Sym "+")),(6,7,G_E)]))
+/\ info((6,7,G_E), ([(6,7,HappyTok (AVar {getString = "foobar"}))]))
+
