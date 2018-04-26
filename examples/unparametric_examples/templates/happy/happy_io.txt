@@ -1,0 +1,19 @@
+"HashSet<HashSet<String>>  Foo;"
+[[AType {getString = "HashSet"},AVar {getString = "HashSet"}],[Sym "<"],[AType {getString = "HashSet"},AVar {getString = "HashSet"}],[Sym "<"],[AType {getString = "String"},AVar {getString = "String"}],[Sym ">>",Sym ">"],[Sym ">"],[AType {getString = "Foo"},AVar {getString = "Foo"}],[Sym ";"]]
+
+
+
+info((0,1,G_Exp), ([(0,1,HappyTok (AVar {getString = "HashSet"}))]))
+/\ info((0,1,G_Type), ([(0,1,HappyTok (AType {getString = "HashSet"}))]))
+/\ info((0,3,G_Exp), ([(0,1,G_Exp),(1,2,HappyTok (Sym "<")),(2,3,G_Exp)]))
+/\ info((0,5,G_Exp), ([(0,1,G_Exp),(1,2,HappyTok (Sym "<")),(2,5,G_Exp)] \/ [(0,3,G_Exp),(3,4,HappyTok (Sym "<")),(4,5,G_Exp)]))
+/\ info((0,7,G_Type), ([(0,1,G_Type),(1,2,HappyTok (Sym "<")),(2,6,G_Type),(6,7,HappyTok (Sym ">"))]))
+/\ info((0,9,G_Stmt), ([(0,7,G_Type),(7,8,G_Exp),(8,9,HappyTok (Sym ";"))]))
+/\ info((2,3,G_Exp), ([(2,3,HappyTok (AVar {getString = "HashSet"}))]))
+/\ info((2,3,G_Type), ([(2,3,HappyTok (AType {getString = "HashSet"}))]))
+/\ info((2,5,G_Exp), ([(2,3,G_Exp),(3,4,HappyTok (Sym "<")),(4,5,G_Exp)]))
+/\ info((2,6,G_Type), ([(2,3,G_Type),(3,4,HappyTok (Sym "<")),(4,5,G_Type),(5,6,HappyTok (Sym ">"))]))
+/\ info((4,5,G_Exp), ([(4,5,HappyTok (AVar {getString = "String"}))]))
+/\ info((4,5,G_Type), ([(4,5,HappyTok (AType {getString = "String"}))]))
+/\ info((7,8,G_Exp), ([(7,8,HappyTok (AVar {getString = "Foo"}))]))
+
